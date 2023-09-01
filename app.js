@@ -1,8 +1,11 @@
+// dependencies?
 const express = require('express');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
 
 const app = express();
+
+const bcrypt = require("bcryptjs") // password encryption
 
 // environmental variables
 dotenv.config({path: './.env'})
@@ -54,15 +57,12 @@ app.get("/login", (req, res) => {
 
 //// BACKEND
 
-// password encryption
-const bcrypt = require("bcryptjs")
-
-
 // receive form values as json
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
 // retrieve user's form values
+//// TODO: fix 'res' hierarchical conflicts
 app.post("/auth/register", (req, res) => {
     const {name, email, password, password_confirm} = req.body
 
