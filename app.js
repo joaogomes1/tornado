@@ -62,44 +62,45 @@ app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
 // retrieve user's form values
-//// TODO: fix 'res' hierarchical conflicts
 app.post("/auth/register", (req, res) => {
     const {name, email, password, password_confirm} = req.body
 
+    // field validation
+    // to do: avoid erasing all fields in case of one is missing.
+    // create a .js file for addressing field validation?
+    if (name.trim().length === 0) {return res.render('register', {message: 'ops! you must insert a name'})}
+    if (email.trim().length === 0) {return res.render('register', {message: 'ops! you must insert an e-mail'})}
+    if (password.trim().length === 0) {return res.render('register', {message: 'ops! you must insert a password'})}
+    if (password_confirm.trim().length === 0) {return res.render('register', {message: 'ops! you must confirm the password'})}
+    if(password != password_confirm) {return res.render('register', {message: 'passwords do not match!'})}
+
     // query
-    var result = db.query('SELECT email FROM user WHERE email = ?', [email], async (error, res) => {
+    db.query('SELECT email FROM user WHERE email = ?', [email], async (error, res2) => {
         if(error) {
             console.log(error)
         }
 
         // email already exists.
-        if(result.length > 0) {
+        if(res2.length > 0) {
             return res.render('register', {
                 message: 'this email is already in use.'
             })
-        }
-        else {
-            // passwords do not match
-            if (password != password_confirm) {
-                return res.render('register', {
-                    message: 'passwords do not match!'
-                })
-            }
         }
         
         // encrypt password
         let hashedPassword = await bcrypt.hash(password, 8)
 
         // feed database
-        db.query('INSERT INTO user SET?', {name: name, email: email, password: hashedPassword}, (error, res) => {
+        db.query('INSERT INTO user SET?', {name: name, email: email, password: hashedPassword}, (error, res3) => {
             if(error) {
                 console.log(error)
             } else {
                 return res.render('register', {
-                    message: 'User registered!'
+                    message: 'User registered successfully!'
                 })
             }
         })
+        
 
     })
 })
@@ -108,3 +109,6 @@ app.post("/auth/register", (req, res) => {
 
 
 
+
+        
+        

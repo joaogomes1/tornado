@@ -1,3 +1,4 @@
+DROP DATABASE tornado;
 CREATE DATABASE tornado;
 USE tornado;
 
@@ -86,7 +87,8 @@ CREATE TABLE estabelecimento (
 	id_usuario			INT(11) NOT NULL, /* o proprietário do estabelecimento */
 		CONSTRAINT fk_id_usuario_3
 		FOREIGN KEY (id_usuario)
-		REFERENCES usuario(id_usuario)
+		REFERENCES usuario(id_usuario),
+	est_url				VARCHAR(2048) UNIQUE
 );
 
 INSERT INTO estabelecimento
