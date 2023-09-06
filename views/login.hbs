@@ -18,10 +18,13 @@
 
     {{!-- Body of each page will go here --}}
     <div class="container mt-4">
+        {{#if message }}
+            <h4 class="alert alert-danger mt-4">{{message}}</h4>
+        {{/if}}
         <div class="card" style="width: 18rem;">            
             <div class="card-header">Login Form</div>    
             <div class="card-body">
-                <form action="/auth/register" method="POST">
+                <form action="/auth/login" method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control" id="email" name="email">                        

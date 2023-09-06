@@ -18,6 +18,9 @@
 
     {{!-- Body of each page will go here --}}
     <div class="container mt-4">
+        {{#if message }}
+            <h4 class="alert alert-danger mt-4">{{message}}</h4>
+        {{/if}}
         <div class="mt-4 p-5 bg-primary text-white rounded">
             <h1> Tornado </h1>
             <p>This project demonstrates how to implement login and register functionalities with Node.js and MySQL </p>

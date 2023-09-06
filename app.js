@@ -1,7 +1,9 @@
-// dependencies?
+// modules?
 const express = require('express');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
+
+// const session = require('express-session');
 
 const app = express();
 
@@ -9,6 +11,14 @@ const bcrypt = require("bcryptjs") // password encryption
 
 // environmental variables
 dotenv.config({path: './.env'})
+
+// // session config
+// app.use(session({
+//     secret: 'secret-key',
+//     resave: false,
+//     saveUninitialized: false,
+//   }));
+
 
 // database connection
 const db = mysql.createConnection({
@@ -86,7 +96,7 @@ app.post("/auth/register", (req, res) => {
                 message: 'this email is already in use.'
             })
         }
-        
+
         // encrypt password
         let hashedPassword = await bcrypt.hash(password, 8)
 
@@ -100,15 +110,37 @@ app.post("/auth/register", (req, res) => {
                 })
             }
         })
-        
+
 
     })
 })
 
-    
 
+// login
+app.post("/auth/login", (req, res) => {
+    const {email, password} = req.body
 
+    // field validation
+    if (email.trim().length === 0) {return res.render('login', {message: 'ops! you must insert an e-mail'})}
+    if (password.trim().length === 0) {return res.render('login', {message: 'ops! you must insert a password'})}
 
+    // query
+    db.query('SELECT * FROM user WHERE email = ?', [email], async (error, res2) => {
+        if(error) {
+            console.log(error)
+        }
 
+        bcrypt.compare(password, res2[0].password, function(err, result) {
+            if(result)
+                res.render('index', {message: 'welcome!'})
+            else
+                res.render('login', {message: 'incorrect email or password'})
+        })
         
-        
+    })
+})
+
+
+
+
+
