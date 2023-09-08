@@ -14,7 +14,10 @@ CREATE TABLE usuario (
 	usu_senha 		VARCHAR(10) NOT NULL,
 		CONSTRAINT ck_password
 		-- CHECK (LENGTH(senha) BETWEEN 8 AND 10)
-		CHECK (CHARACTER_LENGTH(usu_senha) >= 8 AND CHARACTER_LENGTH(usu_senha) <= 10) /* allows insertion (!), but truncates data, if it has more than 10 characters. */
+		CHECK (CHARACTER_LENGTH(usu_senha) >= 8
+		AND CHARACTER_LENGTH(usu_senha) <= 10)	/* allows more than 10 characters (!),
+												but truncates data */
+	/* usu_is_admin	BOOLEAN	DEFAULT 0 */
 );
 
 INSERT INTO usuario
@@ -40,19 +43,19 @@ DELIMITER ;
 
 
 /* PESSOA JURÍDICA */
-CREATE TABLE pessoa_juridica (
+/* CREATE TABLE pessoa_juridica (
 	id_pessoa_juridica	INT PRIMARY KEY AUTO_INCREMENT,
 	id_usuario			INT NOT NULL,
 		CONSTRAINT fk_id_usuario
 		FOREIGN KEY (id_usuario)
 		REFERENCES usuario(id_usuario),
 	pess_jur_cnpj		CHAR(14) UNIQUE NOT NULL
-);
+); */
 
 
 /* ADMIN */
 
-CREATE TABLE admin (
+/* CREATE TABLE admin (
 	id_admin	INT PRIMARY KEY AUTO_INCREMENT,
 	id_usuario	INT UNIQUE NOT NULL,
 		CONSTRAINT fk_id_usuario_2
@@ -63,7 +66,7 @@ CREATE TABLE admin (
 INSERT INTO admin
 (id_usuario)
 VALUES
-(7);
+(7); */
 
 /* listar Administradores */
 
@@ -88,6 +91,7 @@ CREATE TABLE estabelecimento (
 		CONSTRAINT fk_id_usuario_3
 		FOREIGN KEY (id_usuario)
 		REFERENCES usuario(id_usuario),
+	est_pix_codigo		VARCHAR(100) NOT NULL,
 	est_url				VARCHAR(2048) UNIQUE
 );
 
@@ -825,7 +829,6 @@ CREATE TABLE adicional_estabelecimento (
 );
 	
 /* evita duplicação de adicionais no mesmo estabelecimento */
-
 ALTER TABLE adicional_estabelecimento
 ADD UNIQUE unique_adicional_estabelecimento(id_adicional, id_estabelecimento);
 
@@ -833,13 +836,14 @@ ADD UNIQUE unique_adicional_estabelecimento(id_adicional, id_estabelecimento);
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `inserirAdicionalEstabelecimento`(
 	IN arg_id_adicional			INT,
-	IN arg_id_estabelecimento 	INT
+	IN arg_id_estabelecimento 	INT,
+	IN arg_adi_est_valor	 	INT
 )
 BEGIN
 	INSERT INTO adicional_estabelecimento
-    (id_adicional, id_estabelecimento)
+    (id_adicional, id_estabelecimento, adi_est_valor)
     VALUES
-    (arg_id_adicional, arg_id_estabelecimento);
+    (arg_id_adicional, arg_id_estabelecimento, arg_adi_est_valor);
     
     SELECT *
     FROM adicional_estabelecimento
@@ -848,13 +852,13 @@ END$$
 DELIMITER ;
 
 INSERT INTO adicional_estabelecimento
-(id_adicional, id_estabelecimento)
+(id_adicional, id_estabelecimento, adi_est_valor)
 VALUES
-(5, 2),
-(1, 2),
-(2, 1),
-(1, 1),
-(3, 1);
+(5, 2, 1.99),
+(1, 2, 1.99),
+(2, 1, 2.99),
+(1, 1, 2.99),
+(3, 1, 2.99);
 
 
 /* ADICIONAL_ITEM */
@@ -913,14 +917,14 @@ CREATE TABLE receita_venda (
 
 /* PIX */
 
-CREATE TABLE pix (
+/* CREATE TABLE pix (
 	id_pix		INT PRIMARY KEY AUTO_INCREMENT,
 	id_pedido	INT NOT NULL,
 		CONSTRAINT fk_id_pedido_4
 		FOREIGN KEY (id_pedido)
 		REFERENCES pedido(id_pedido),
 	pix_codigo	CHAR(26) NOT NULL
-);
+); */
 
 
 /* OUTROS PROCEDURES */

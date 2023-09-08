@@ -1,25 +1,11 @@
-// modules?
+// modules
 const express = require('express');
 const mysql = require('mysql');
+const bcrypt = require("bcryptjs") // password encryption
 const dotenv = require('dotenv');
-
 const session = require('express-session');
 
 const app = express();
-
-const bcrypt = require("bcryptjs") // password encryption
-
-// environmental variables
-dotenv.config({path: './.env'})
-
-// session config
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 30000 }
-  }));
-
 
 // database connection
 const db = mysql.createConnection({
@@ -38,6 +24,17 @@ db.connect((error) => {
     }
 })
 
+// environmental variables
+dotenv.config({path: './.env'})
+
+// session config
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30000 }
+  }));
+
 // view engine
 app.set('view engine', 'hbs')
 
@@ -49,9 +46,6 @@ app.use(express.static(publicDir))
 // index routing
 app.get("/", (req, res) => {
     const sessionData = req.session
-
-    // access session data
-
     res.render("index")
 })
 
@@ -135,7 +129,7 @@ app.post("/auth/login", (req, res) => {
             console.log(error)
         }
 
-        if (res2.length > 0) {
+        if (res2 && res2.length > 0) {
             bcrypt.compare(password, res2[0].password, function(err, result) {
                 if(result) {
                     if(req.session.isLoggedIn) {
@@ -145,7 +139,6 @@ app.post("/auth/login", (req, res) => {
                         req.session.isLoggedIn = true
                         req.session.email = email
                         res.render('index', {message: 'welcome!'})
-                        // res.render('index', {email})
                     }
                 }
                 else{
