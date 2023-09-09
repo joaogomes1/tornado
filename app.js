@@ -1,18 +1,23 @@
 // modules
 const express = require('express');
 const mysql = require('mysql');
-const bcrypt = require("bcryptjs") // password encryption
-const dotenv = require('dotenv');
-const session = require('express-session');
+const bcrypt = require("bcryptjs"); // password encryption
 
 const app = express();
+
+// environmental variables
+const dotenv = require('dotenv');
+dotenv.config();
+// dotenv.config({path: './.env'})
+
+const session = require('express-session');
 
 // database connection
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE,
     user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
+    password: process.env.DATABASE_PASSWORD
 })
 
 db.connect((error) => {
@@ -24,8 +29,6 @@ db.connect((error) => {
     }
 })
 
-// environmental variables
-dotenv.config({path: './.env'})
 
 // session config
 app.use(session({
@@ -117,6 +120,11 @@ app.post("/auth/register", (req, res) => {
 
 // login
 app.post("/auth/login", (req, res) => {
+
+    if(req.session.isLoggedIn) {
+        return res.render('index', {message: 'you are already logged in'})
+    }
+    
     const {email, password} = req.body
 
     // field validation
@@ -162,7 +170,7 @@ app.get('/logout', (req, res) => {
             if(err)
                 console.log(err)
             else
-                res.render('login', {message: 'user logged out sucessfully'})
+                res.render('index', {message: 'user logged out sucessfully'})
         })
     }
 }) // method
