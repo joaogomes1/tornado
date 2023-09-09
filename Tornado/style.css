@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+/* Início do CSS da tela Login*/
+
+body{
+    margin: 0;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+body * {
+    box-sizing: border-box;
+}
+
+.main-login{
+    width: 100vw;
+    height: 100vh;
+    background: #D7B4B4;     /*201b2c; f3c2c2; F5E029; D9D9D9*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-login{
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.left-login > h1{
+    font-size: 3vw;
+    color: #212121;
+}
+
+.left-login-image{
+    width: 24vw;
+    border: 2px solid #D7B4B4;
+}
+
+@keyframes animacao-imagem {
+    0% {
+        transform: scale(1); /* Tamanho normal */
+        opacity: 1; /* Opacidade 100% */
+    }
+    50% {
+        transform: scale(1.2); /* Tamanho aumentado em 20% */
+        opacity: 0.7; /* Opacidade 70% */
+    }
+    100% {
+        transform: scale(1); /* Tamanho de volta ao normal */
+        opacity: 1; /* Opacidade 100% */
+    }
+}
+
+/* Aplicando a animação à imagem */
+.left-login-image {
+    animation-name: animacao-imagem; /* Nome da animação definido acima */
+    animation-duration: 2s; /* Duração da animação (2 segundos) */
+    animation-timing-function: ease-in-out; /* Função de temporização (pode ser ajustada) */
+    animation-iteration-count: infinite; /* Repetir infinitamente */
+}
+
+.right-login{
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.right-login > h1{
+    font-size: 3vw;
+    color: #212121;
+}
+
+.card-login{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px 30px;
+    background: #FF4B12;
+    border-radius: 20px;
+    box-shadow: 0px 10px 40px #00000056;
+}
+
+.card-login > h1{
+    color: #212121;
+    font-weight: 800;
+    margin: 0;
+}
+
+.textfield{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 10px 0px;
+}
+
+.textfield > input{
+    width: 100%;
+    border: none;
+    border-radius: 10px;                                   /*29:50*/
+    padding: 15px;
+    background:#f3c2c2;
+    color: #212121;
+    font-size: 12pt;
+    box-shadow: 0px 10px 40px #00000056;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.textfield > label{
+    color: #212121;
+    margin-bottom: 10px;
+}
+
+.textfield > input::placeholder{
+    color: #212121;
+}
+
+.btn-login{
+    width: 50%;
+    padding: 16px 10px;
+    margin: 25px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #212121;
+    background: #f3c2c2;
+    cursor: pointer;
+    box-shadow: 0px 10px 40px -12px #D9D9D9;
+}
+
+
+@media only screen and (max-width: 950px){
+    .card-login{
+        width: 85%;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .main-login{
+        flex-direction: column;
+    }
+    .left-login > h1{
+        display: none;
+    }
+    .left-login{
+        width: 100%;
+        height: auto;
+    }
+    .right-login{
+        width: 100%;
+        height: auto;
+    }
+    .left-login-image{
+        width: 40vh;
+    }
+    .card-login{
+        width: 90%;
+    }
+}
+
+/* Fim da Tela de Login*/
+/*--------------------------------------------------------------------------------------------- */
+
+/*--------------------------------------------------------------------------------------------- */
+/* Início da Tela de Cadastro */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D7B4B4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.cadastro-form {
+    background-color: #FF4B12;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 320px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+}
+
+.form-group label i.material-icons {
+    margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+}
+
+/*--------------------------------------------------------------------------------------------- */
+
+/* Tela de Cadastro de Estabelecimentos */
+
+/* Estilo para alinhar os ícones do lado das opções e um abaixo do outro */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px; /* Espaçamento entre as opções */
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+}
+
+.form-group label i.material-icons {
+    margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+}
+
+/*--------------------------------------------------------------------------------------------- */
