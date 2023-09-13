@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+    <style>
+        .error-message {
+            display: none;
+            color: black; 
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-login">
+        <div class="left-login">
+            <h1>Tornado Food<br></h1>
+            <img src="Logo Tornado.jpeg" class="left-login-image" alt="LogoTornado"> 
+        </div>
+        <div class="right-login">
+            <h1>Bem Vindo<br></h1>
+            <div class="card-login">
+                <h1>Login</h1>
+                <div class="textfield">
+                    <label for="e-mail">E-Mail</label>
+                    <input type="text" name="e-mail" placeholder="E-Mail">
+                </div>
+                <div class="textfield">
+                    <label for="senha">Senha</label>
+                    <input type="password" name="senha" placeholder="Senha">
+                </div>
+                <button class="btn-login">Login</button>
+                <p>Não possui uma conta? <a href="Cadastro.html">Cadastre-se</a></p>
+                <p class="error-message">Não foi possível acessar sua conta. Verifique suas credenciais.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginButton = document.querySelector(".btn-login");
+            const errorMessage = document.querySelector(".error-message");
+
+            loginButton.addEventListener("click", function (e) {
+                const hasError = true;
+
+                if (hasError) {
+                    errorMessage.style.display = "block";
+                } else {
+                    window.location.href = "pagina-de-sucesso.html";
+                }
+
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

@@ -8,9 +8,17 @@ const app = express();
 // environmental variables
 const dotenv = require('dotenv');
 dotenv.config();
-// dotenv.config({path: './.env'})
 
+// user session
 const session = require('express-session');
+
+// session config
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30000 }
+}));
 
 // database connection
 const db = mysql.createConnection({
@@ -29,15 +37,6 @@ db.connect((error) => {
     }
 })
 
-
-// session config
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 30000 }
-  }));
-
 // view engine
 app.set('view engine', 'hbs')
 
@@ -46,15 +45,15 @@ const path = require("path")
 const publicDir = path.join(__dirname, './public')
 app.use(express.static(publicDir))
 
-// index routing
-app.get("/", (req, res) => {
-    const sessionData = req.session
-    res.render("index")
-})
-
 // configure port
 app.listen(5000, () => {
     console.log("server started on port 5000")
+})
+
+//// ROUTING
+app.get("/", (req, res) => {
+    const sessionData = req.session
+    res.render("index")
 })
 
 // register
@@ -68,18 +67,18 @@ app.get("/login", (req, res) => {
 })
 
 //// BACKEND
-
-// receive form values as json
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
-// retrieve user's form values
-app.post("/auth/register", (req, res) => {
+// registro novo usuário
+app.post("/auth/register/user", (req, res, error) => {
+    if(error) {
+        console.log(error)
+    }
     const {name, email, password, password_confirm} = req.body
 
     // field validation
-    // to do: avoid erasing all fields in case of one is missing.
-    // create a .js file for addressing field validation?
+    // to do: avoid erasing all fields in case of invalid field values.
     if (name.trim().length === 0) {return res.render('register', {message: 'ops! you must insert a name'})}
     if (email.trim().length === 0) {return res.render('register', {message: 'ops! you must insert an e-mail'})}
     if (password.trim().length === 0) {return res.render('register', {message: 'ops! you must insert a password'})}
@@ -116,7 +115,6 @@ app.post("/auth/register", (req, res) => {
 
     })
 })
-
 
 // login
 app.post("/auth/login", (req, res) => {
@@ -162,6 +160,7 @@ app.post("/auth/login", (req, res) => {
 
 }) // method
 
+// logout
 app.get('/logout', (req, res) => {
     if (!req.session.isLoggedIn)
         return res.render('index', {message: 'you\'re not logged in'})
